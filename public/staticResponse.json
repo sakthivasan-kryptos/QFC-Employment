@@ -1,0 +1,153 @@
+{
+  "output": {
+    "analysis_summary": {
+      "document_type": "Employment Contract & HR Manual",
+      "company_name": "Not specified",
+      "analysis_date": "2024-06-05",
+      "overall_status": "Completed"
+    },
+    "critical_gaps": {
+      "count": 5,
+      "description": "Mandatory compliance issues that require immediate attention",
+      "items": [
+        {
+          "gap_type": "Probation Period Gap",
+          "severity": "Critical",
+          "qfc_article": "Article 18",
+          "document_states": "The first six (6) months of employment will be considered a probationary period.",
+          "qfc_requires": "A probationary period must not exceed 3 months from the date employment commences.",
+          "immediate_action": "Amend the probationary period to a maximum of 3 months.",
+          "legal_risk": "High"
+        },
+        {
+          "gap_type": "Annual Leave Entitlement Gap",
+          "severity": "Critical",
+          "qfc_article": "Article 33",
+          "document_states": "Employees are entitled to 15 working days of annual leave per year.",
+          "qfc_requires": "Employees must receive at least 20 working days of annual leave per year.",
+          "immediate_action": "Increase annual leave entitlement to at least 20 working days per year.",
+          "legal_risk": "High"
+        },
+        {
+          "gap_type": "Termination Notice Period Gap",
+          "severity": "Critical",
+          "qfc_article": "Article 23",
+          "document_states": "Either party may terminate employment with 2 weeks' notice.",
+          "qfc_requires": "Termination notice must be at least 30 days after the probationary period for employees employed 3 months or longer.",
+          "immediate_action": "Increase termination notice after probation to at least 30 days.",
+          "legal_risk": "High"
+        },
+        {
+          "gap_type": "Sick Leave Explicit Entitlement Gap",
+          "severity": "Critical",
+          "qfc_article": "Article 38",
+          "document_states": "Sick leave provisions are detailed in the HR Manual.",
+          "qfc_requires": "Employees must be entitled to at least 7 working days of sick leave per year (the minimum referenced in compliance summary; actual regulation provides up to 60 working days). Minimum entitlements must be directly stated.",
+          "immediate_action": "Explicitly state sick leave entitlement of at least 7 working days per year in the contract.",
+          "legal_risk": "High"
+        },
+        {
+          "gap_type": "Missing Overtime Compensation Clause",
+          "severity": "Critical",
+          "qfc_article": "Article 30",
+          "document_states": "\"Overtime work may be required as per business needs.\"",
+          "qfc_requires": "Overtime work must be compensated at 125% of normal hourly rate or via compensatory time as agreed.",
+          "immediate_action": "Add overtime clause specifying pay at 125% of normal hourly rate for overtime work.",
+          "legal_risk": "High"
+        }
+      ]
+    },
+    "recommendations": {
+      "count": 2,
+      "description": "Best practice improvements suggested",
+      "items": [
+        {
+          "area": "Leave Policy Enhancement",
+          "priority": "Medium",
+          "current_practice": "Refers employees to the HR Manual for detailed leave policies without summarizing statutory minimums in the contract.",
+          "recommended_change": "Summarize statutory minimums for sick and annual leave directly in the employment contract.",
+          "business_benefit": "Improves clarity and reduces confusion for employees, supporting legal compliance and fair practice.",
+          "implementation_effort": "Easy"
+        },
+        {
+          "area": "Notice & Termination Process",
+          "priority": "Medium",
+          "current_practice": "Notice periods not tailored to years of service as per QFC Article 23.",
+          "recommended_change": "Clearly specify variable notice periods based on length of service and ensure alignment with QFC standards.",
+          "business_benefit": "Reduces dispute risks and clarifies rights and obligations for both employer and employee.",
+          "implementation_effort": "Moderate"
+        }
+      ]
+    },
+    "inconsistencies": {
+      "count": 2,
+      "description": "Internal document conflicts found",
+      "items": [
+        {
+          "conflict_area": "Contract vs HR Manual Reference",
+          "conflicting_statements": [
+            "\"Sick leave provisions are detailed in the HR Manual.\"",
+            "No summary of statutory minimum sick leave entitlement in the contract."
+          ],
+          "operational_risk": "Employees may be unsure of minimum entitlements, leading to confusion and disputes.",
+          "recommended_resolution": "Add statutory sick leave minimums directly to the contract and refer to the HR Manual for further details.",
+          "priority": "High"
+        },
+        {
+          "conflict_area": "Annual Leave Specification",
+          "conflicting_statements": [
+            "\"Employees are entitled to 15 working days of annual leave per year.\"",
+            "QFC Regulations explicitly require a minimum of 20 working days."
+          ],
+          "operational_risk": "Leaves the organization open to claims for under-provision, risk of enforcement action.",
+          "recommended_resolution": "Align the contract language with QFC minimum requirements for annual leave.",
+          "priority": "High"
+        }
+      ]
+    },
+    "compliant_items": {
+      "count": 1,
+      "description": "Areas meeting QFC standards",
+      "items": [
+        {
+          "compliance_area": "Monthly Salary Payment and Pay Statement",
+          "qfc_article": "Article 26",
+          "evidence": "Pay frequency and statement requirement are referenced; no issue noted regarding salary payment timing.",
+          "strength": "Helps prevent disputes and supports transparency in payroll administration."
+        }
+      ]
+    },
+    "dashboard_metrics": {
+      "reviews_this_month": 23,
+      "compliance_rate": "89%",
+      "gaps_found": 156,
+      "avg_review_time": "2.3 hrs",
+      "total_critical_gaps": 5,
+      "total_recommendations": 2,
+      "total_inconsistencies": 2,
+      "total_compliant_areas": 15
+    },
+    "action_plan": {
+      "immediate_actions": [
+        "Reduce probation period in contracts to a maximum of 3 months.",
+        "Increase annual leave entitlement to meet or exceed 20 working days.",
+        "Amend termination clauses to require at least 30 days' notice after probation."
+      ],
+      "short_term_improvements": [
+        "Add an explicit sick leave entitlement clause (minimum 7 working days) in all template contracts.",
+        "Update overtime clauses to specify statutory pay rate or compensatory time."
+      ],
+      "long_term_enhancements": [
+        "Regular review of employment terms against QFC updates.",
+        "Conduct compliance training for HR and line managers about statutory standards."
+      ]
+    },
+    "final_assessment": {
+      "overall_compliance_status": "Non-Compliant",
+      "confidence_score": "96%",
+      "risk_level": "High",
+      "next_review_date": "2024-07-15",
+      "executive_summary": "This employment contract falls short of multiple critical Qatar Financial Centre Employment Regulation standards, notably regarding probation, leave, notice, sick leave, and overtime pay. Immediate remediation is advised to mitigate high risk of regulatory penalties, employee claims, and reputational harm."
+    }
+  }
+}

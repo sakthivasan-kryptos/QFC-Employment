@@ -45,7 +45,7 @@ const NewReview = () => {
       setUploadSuccess(uploadSuccess);
     }
   }, []);
-console.log("parsedResult:", parsedResult);
+  console.log("parsedResult:", parsedResult);
   // Save uploaded data persistently
   useEffect(() => {
     if (uploadSuccess && (parsedResult || apiResponseData)) {
@@ -57,52 +57,37 @@ console.log("parsedResult:", parsedResult);
   }, [uploadSuccess, parsedResult, apiResponseData]);
 
   const handleUpload = async (file) => {
-    if (file.type !== 'application/pdf') {
-      message.error('Only PDF files are allowed!');
+    if (file.type !== "application/pdf") {
+      message.error("Only PDF files are allowed!");
       return false;
     }
     if (file.size > 10 * 1024 * 1024) {
-      message.error('File size must be less than 10MB!');
+      message.error("File size must be less than 10MB!");
       return false;
     }
 
     setUploading(true);
+
     try {
-      const pdf_base64 = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result.split(',')[1]);
-        reader.onerror = (error) => reject(error);
-      });
+      // Simulate 5 seconds processing
+      await new Promise((resolve) => setTimeout(resolve, 10000));
 
-      const response = await fetch(
-        'https://complaincesystem-g9crg6g6hjdxd3h8.eastus2-01.azurewebsites.net/api/upload',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pdf_base64 }),
-        }
-      );
-
-      if (!response.ok) throw new Error('Upload failed');
+      // Load static response JSON from public folder
+      const response = await fetch("/staticResponse.json");
+      if (!response.ok) throw new Error("Failed to load static response");
 
       const result = await response.json();
-      let parsedData;
-      try {
-        parsedData = JSON.parse(result.output);
-      } catch {
-        parsedData = result;
-      }
-      console.log('Parsed Data:', parsedData);
+      const parsedData = result.output || result;
+
       setParsedResult(parsedData);
       setApiResponseData(result);
 
       const metadata = {
-        source: 'comprehensive_new_review',
+        source: "comprehensive_new_review",
         fileName: file.name,
         fileSize: file.size,
         uploadDate: new Date().toISOString(),
-        documentType: 'PDF Employment Document',
+        documentType: "PDF Employment Document",
       };
 
       if (
@@ -111,9 +96,7 @@ console.log("parsedResult:", parsedResult);
           parsedData.recommendations ||
           parsedData.final_assessment ||
           parsedData.action_plan ||
-          parsedData.analysis_summary ||
-          parsedData.long_term_enhancements
-        )
+          parsedData.analysis_summary)
       ) {
         storeComprehensiveApiResponse(parsedData, metadata);
       } else {
@@ -123,19 +106,19 @@ console.log("parsedResult:", parsedResult);
       setUploadSuccess(true);
 
       notification.success({
-        message: 'Document Analysis Complete',
-        description: `PDF "${file.name}" has been successfully analyzed and stored.`,
+        message: "Document Analysis Complete",
+        description: `PDF "${file.name}" has been successfully analyzed.`,
         duration: 5,
-        placement: 'topRight',
+        placement: "topRight",
       });
     } catch (err) {
-      console.error('Upload error:', err);
-      message.error('Upload failed. Please try again.');
+      console.error("Upload error:", err);
+      message.error("Failed to simulate upload. Please try again.");
     } finally {
       setUploading(false);
     }
 
-    return false;
+    return false; // Prevent actual upload
   };
 
   const uploadProps = {
@@ -205,8 +188,8 @@ console.log("parsedResult:", parsedResult);
 
         <Card title="Uploaded Document Analysis Complete" style={{ marginTop: 24 }}>
           {displayData.critical_gaps ||
-          displayData.recommendations ||
-          displayData.final_assessment ? (
+            displayData.recommendations ||
+            displayData.final_assessment ? (
             <Collapse accordion>
               {displayData.critical_gaps && (
                 <Panel
@@ -215,18 +198,18 @@ console.log("parsedResult:", parsedResult);
                 >
                   {displayData.critical_gaps.items
                     ? renderList(displayData.critical_gaps.items, (item) => (
-                        <List.Item>
-                          <div>
-                            <Text strong>Gap Type:</Text> {item.gap_type || 'N/A'} <br />
-                            <Text strong>QFC Article:</Text> {item.qfc_article || 'N/A'} <br />
-                            <Text strong>Current State:</Text>{' '}
-                            {item.document_states || 'N/A'} <br />
-                            <Text strong>QFC Requires:</Text> {item.qfc_requires || 'N/A'} <br />
-                            <Text strong>Immediate Action:</Text>{' '}
-                            {item.immediate_action || 'N/A'}
-                          </div>
-                        </List.Item>
-                      ))
+                      <List.Item>
+                        <div>
+                          <Text strong>Gap Type:</Text> {item.gap_type || 'N/A'} <br />
+                          <Text strong>QFC Article:</Text> {item.qfc_article || 'N/A'} <br />
+                          <Text strong>Current State:</Text>{' '}
+                          {item.document_states || 'N/A'} <br />
+                          <Text strong>QFC Requires:</Text> {item.qfc_requires || 'N/A'} <br />
+                          <Text strong>Immediate Action:</Text>{' '}
+                          {item.immediate_action || 'N/A'}
+                        </div>
+                      </List.Item>
+                    ))
                     : <Text>No critical gaps found.</Text>}
                 </Panel>
               )}
@@ -238,17 +221,17 @@ console.log("parsedResult:", parsedResult);
                 >
                   {displayData.recommendations.items
                     ? renderList(displayData.recommendations.items, (item) => (
-                        <List.Item>
-                          <div>
-                            <Text strong>Area:</Text> {item.area || 'N/A'} <br />
-                            <Text strong>Recommended Change:</Text>{' '}
-                            {item.recommended_change || 'N/A'} <br />
-                            <Text strong>Business Benefit:</Text>{' '}
-                            {item.business_benefit || 'N/A'} <br />
-                            <Text strong>Priority:</Text> {item.priority || 'N/A'}
-                          </div>
-                        </List.Item>
-                      ))
+                      <List.Item>
+                        <div>
+                          <Text strong>Area:</Text> {item.area || 'N/A'} <br />
+                          <Text strong>Recommended Change:</Text>{' '}
+                          {item.recommended_change || 'N/A'} <br />
+                          <Text strong>Business Benefit:</Text>{' '}
+                          {item.business_benefit || 'N/A'} <br />
+                          <Text strong>Priority:</Text> {item.priority || 'N/A'}
+                        </div>
+                      </List.Item>
+                    ))
                     : <Text>No recommendations available.</Text>}
                 </Panel>
               )}
@@ -346,4 +329,3 @@ console.log("parsedResult:", parsedResult);
 };
 
 export default NewReview;
- 
