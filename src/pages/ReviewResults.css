@@ -1,0 +1,8 @@
+.first-page-card {
+  background: #fafcff;
+  box-shadow: 0 6px 32px 0 rgba(60,72,107,0.11);
+  border-radius: 12px;
+}
+.pdf-export-mode * {
+  /* Optional: PDF-specific tweaks, if needed */
+}
