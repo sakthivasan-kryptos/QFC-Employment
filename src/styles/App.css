@@ -1,6 +1,13 @@
 /* QFC Employment Standards Office Styles */
-@import './compliance.css';
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+/* =========================
+   HEADER
+========================= */
 .qfc-header {
   background: linear-gradient(135deg, #4a6cf7 0%, #3b5bdb 100%) !important;
   padding: 0 32px !important;
@@ -37,17 +44,59 @@
 
 .header-text {
   line-height: 1.4;
+  color: white;
 }
 
 .header-right {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
+/* User info in header */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
+  color: white;
+}
+
+/* Avatar dropdown */
+.header-right .ant-avatar {
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.header-right .ant-avatar:hover {
+  border-color: rgba(255,255,255,0.3);
+}
+
+/* Dropdown menus always on top */
+.ant-dropdown {
+  z-index: 2000 !important;
+}
+
+.ant-dropdown-arrow {
+  z-index: 2100 !important;
+}
+
+/* Dropdown styling */
+.header-right .ant-dropdown {
+  min-width: 160px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  border-radius: 6px !important;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
 .qfc-sidebar {
   background: #ffffff !important;
   border-right: 1px solid #f0f0f0 !important;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06) !important;
+  overflow: visible !important;
 }
 
 .qfc-menu {
@@ -81,377 +130,46 @@
   color: white !important;
 }
 
+/* =========================
+   CONTENT
+========================= */
 .qfc-content {
   margin-top: 0px;
   background: #fafbfc !important;
   padding: 20px 20px !important;
   min-height: calc(100vh - 80px) !important;
+  overflow: visible !important;
 }
 
-
-
-.stat-card {
+/* =========================
+   STAT CARDS
+========================= */
+.stat-card, .review-card, .analysis-card, .chart-card, .violations-card, .performance-card {
   border: none !important;
   border-radius: 16px !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
   transition: all 0.3s ease !important;
   overflow: hidden !important;
+  animation: fadeInUp 0.6s ease-out !important;
 }
 
-.stat-card:hover {
+/* Hover animation */
+.stat-card:hover, .review-card:hover, .analysis-card:hover, .chart-card:hover, .violations-card:hover, .performance-card:hover {
   transform: translateY(-4px) !important;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
 }
 
-.stat-card .ant-card-body {
-  padding: 32px 24px !important;
-}
-
-.qfc-statistic .ant-statistic-title {
-  color: #666 !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  margin-bottom: 12px !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-}
-
-.recent-reviews-section {
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.reviews-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.review-card {
-  border: 1px solid #f0f0f0 !important;
-  border-radius: 12px !important;
-  box-shadow: none !important;
-  transition: all 0.3s ease !important;
-}
-
-.review-card:hover {
-  border-color: #d9d9d9 !important;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
-}
-
-.review-card .ant-card-body {
-  padding: 24px !important;
-}
-
-.review-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.review-info {
-  flex: 1;
-}
-
-.review-status {
-  flex-shrink: 0;
-}
-
-/* New Review Upload Section */
-.upload-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-}
-
-.upload-card {
-  width: 100%;
-  max-width: 600px;
-  border: 2px dashed #d9d9d9 !important;
-  border-radius: 16px !important;
-  background: #fafafa !important;
-}
-
-.upload-card.success-card {
-  border: 2px solid #52c41a !important;
-  background: #f6ffed !important;
-}
-
-.upload-card .ant-card-body {
-  padding: 60px 40px !important;
-}
-
-.upload-area {
-  text-align: center;
-}
-
-/* Upload drag and drop styles */
-.upload-card .ant-upload-drag {
-  background: transparent !important;
-  border: none !important;
-}
-
-.upload-card .ant-upload-drag:hover {
-  border-color: #4a6cf7 !important;
-}
-
-.upload-card .ant-upload-drag.ant-upload-drag-hover {
-  border-color: #4a6cf7 !important;
-}
-
-/* Filters Section */
-.filters-section {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-/* Reviews Table */
-.reviews-table .ant-table-thead > tr > th {
-  background: #fafafa !important;
-  border-bottom: 2px solid #f0f0f0 !important;
-  font-weight: 600 !important;
-  color: #262626 !important;
-}
-
-.reviews-table .ant-table-tbody > tr:hover > td {
-  background: #f8f9ff !important;
-}
-
-/* Analysis Cards */
-.analysis-card {
-  border: none !important;
-  border-radius: 16px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-  transition: all 0.3s ease !important;
-  overflow: hidden !important;
-}
-
-.analysis-card.critical {
-  border-left: 4px solid #ff4d4f !important;
-}
-
-.analysis-card.recommendations {
-  border-left: 4px solid #faad14 !important;
-}
-
-.analysis-card.inconsistencies {
-  border-left: 4px solid #1890ff !important;
-}
-
-.analysis-card.compliant {
-  border-left: 4px solid #52c41a !important;
-}
-
-.analysis-content {
-  text-align: center;
-  padding: 20px;
-}
-
-.analysis-number {
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 1;
-  margin: 16px 0;
-  color: #262626;
-}
-
-/* Chart Cards */
-.chart-card,
-.violations-card,
-.performance-card {
-  border: none !important;
-  border-radius: 16px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-}
-
-.chart-placeholder {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.violations-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.violation-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.violation-item:last-child {
-  border-bottom: none;
-}
-
-.violation-count {
-  font-weight: 600;
-  font-size: 16px;
-}
-
-.performance-metrics {
-  padding: 20px;
-}
-
-.metric-item {
-  text-align: center;
-  padding: 20px 0;
-}
-
-.metric-value {
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 1;
-  margin: 8px 0;
-}
-
-.recent-reports {
-  padding: 40px;
-  text-align: center;
-  color: #8c8c8c;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .qfc-header {
-    padding: 0 16px !important;
-  }
-  
-  .header-text h3 {
-    font-size: 18px !important;
-  }
-  
-  .qfc-content {
-    padding: 24px 16px !important;
-  }
-  
-  .content-header h2 {
-    font-size: 24px !important;
-  }
-  
-  .recent-reviews-section {
-    padding: 24px 16px;
-  }
-  
-  .review-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  
-  .review-status {
-    align-self: flex-end;
-  }
-
-  .upload-card .ant-card-body {
-    padding: 40px 20px !important;
-  }
-
-  .filters-section {
-    padding: 16px;
-  }
-
-  .analysis-content {
-    padding: 16px;
-  }
-
-  .analysis-number {
-    font-size: 36px;
-  }
-}
-
-@media (max-width: 576px) {
-  .logo-section {
-    gap: 12px;
-  }
-  
-  .logo-icon {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .header-text h3 {
-    font-size: 16px !important;
-  }
-  
-  .header-text span {
-    font-size: 12px !important;
-  }
-
-  .filters-section .ant-row {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .filters-section .ant-col {
-    width: 100% !important;
-  }
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-}
-
-/* Animation for cards */
+/* =========================
+   ANIMATIONS
+========================= */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.stat-card,
-.review-card,
-.analysis-card,
-.chart-card,
-.violations-card,
-.performance-card {
-  animation: fadeInUp 0.6s ease-out !important;
-}
-
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-.stat-card:nth-child(4) { animation-delay: 0.4s; }
-
-.review-card:nth-child(1) { animation-delay: 0.5s; }
-.review-card:nth-child(2) { animation-delay: 0.6s; }
-.review-card:nth-child(3) { animation-delay: 0.7s; }
-
-.analysis-card:nth-child(1) { animation-delay: 0.1s; }
-.analysis-card:nth-child(2) { animation-delay: 0.2s; }
-.analysis-card:nth-child(3) { animation-delay: 0.3s; }
-.analysis-card:nth-child(4) { animation-delay: 0.4s; }
-
-/* Authentication Styles */
+/* =========================
+   AUTH & LOGIN
+========================= */
 .protected-route-loading {
   min-height: 100vh;
   display: flex;
@@ -478,49 +196,29 @@
   color: #6b7280;
 }
 
-/* User info in header */
-.user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  line-height: 1.2;
-}
+/* Spinner animation */
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* Global loading spinner animation */
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Responsive adjustments for authentication */
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 768px) {
-  .user-info {
-    display: none;
+  .qfc-header {
+    padding: 0 16px !important;
   }
+
+  .header-text h3 { font-size: 18px !important; }
+
+  .qfc-content { padding: 24px 16px !important; }
+
+  .header-right { flex-direction: row-reverse; gap: 12px; }
+
+  .user-info { display: none; }
 }
 
-/* Focus styles for better accessibility */
-.checkbox-input:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
+@media (max-width: 576px) {
+  .logo-section { gap: 12px; }
+  .logo-icon { width: 32px; height: 32px; }
+  .header-text h3 { font-size: 16px !important; }
+  .header-text span { font-size: 12px !important; }
 }
-
-.demo-credential:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
-/* Smooth transitions for better UX */
-* {
-  box-sizing: border-box;
-}
-
-.login-card,
-.demo-credentials,
-.error-message {
-  will-change: transform;
-}
-
-
-

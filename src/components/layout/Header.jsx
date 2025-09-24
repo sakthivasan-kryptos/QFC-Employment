@@ -8,30 +8,15 @@ import {
   MenuFoldOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../../contexts/AuthContext';
-import './Header.css';
 
 const { Header: AntHeader } = Layout;
 const { Title, Text } = Typography;
-const { confirm } = Modal;
 
 const Header = ({ collapsed, onSidebarToggle }) => {
   const { user, logout } = useAuth();
-
+  console.log("Header - user:", user);
   const handleLogout = () => {
-    confirm({
-      title: 'Confirm Logout',
-      icon: <ExclamationCircleOutlined />,
-      content: 'Are you sure you want to logout?',
-      okText: 'Yes, Logout',
-      cancelText: 'Cancel',
-      onOk() {
-        logout();
-      },
-      onCancel() {
-        console.log('Logout cancelled');
-
-      },
-    });
+    logout();
   };
 
   const handleMenuClick = ({ key }) => {
@@ -51,41 +36,24 @@ const Header = ({ collapsed, onSidebarToggle }) => {
   };
 
   const userMenuItems = [
-    {
-      key: 'profile',
-      icon: <UserOutlined />,
-      label: 'Profile',
-    },
-    {
-      key: 'settings',
-      icon: <SettingOutlined />,
-      label: 'Settings',
-    },
-    {
-      type: 'divider',
-    },
-    {
-      key: 'logout',
-      icon: <LogoutOutlined />,
-      label: 'Logout',
-      danger: true,
-    },
+    { key: 'profile', icon: <UserOutlined />, label: 'Profile' },
+    { key: 'settings', icon: <SettingOutlined />, label: 'Settings' },
+    { type: 'divider' },
+    { key: 'logout', icon: <LogoutOutlined />, label: 'Logout', danger: true },
   ];
 
   return (
-    <AntHeader className="qfc-header" >
+    <AntHeader className="qfc-header">
       <div className="header-left">
         <Button
           type="text"
           icon={collapsed ? <MenuOutlined /> : <MenuFoldOutlined />}
           onClick={onSidebarToggle}
-          style={{ marginRight: 16, fontSize: '18px' }}
+          style={{ marginRight: 16, fontSize: '18px', color: 'white' }}
           aria-label="Toggle sidebar"
         />
         <div className="logo-section">
-
           <div className="logo-icon">
-
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -106,8 +74,11 @@ const Header = ({ collapsed, onSidebarToggle }) => {
       <div className="header-right">
         <Space align="center">
           <div className="user-info">
-            <Text style={{ color: 'white', marginRight: '8px' }}>
+            <Text style={{ color: 'white', marginRight: '8px', fontSize: '12px', fontWeight: 'bold' }}>
               {user?.name || user?.email || 'User'}
+            </Text>
+            <Text style={{ color: 'white', marginRight: '8px', fontSize: '12px', opacity: 0.8 }}>
+              {user?.email || 'User@gmail.com'}
             </Text>
             {user?.role && (
               <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px', marginRight: '8px' }}>
@@ -116,34 +87,20 @@ const Header = ({ collapsed, onSidebarToggle }) => {
             )}
           </div>
           <Dropdown
-            menu={{
-              items: userMenuItems,
-              onClick: handleMenuClick
-            }}
+            menu={{ items: userMenuItems, onClick: handleMenuClick }}
             placement="bottomRight"
             trigger={['click']}
             arrow
-            overlayStyle={{
-              minWidth: '160px',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-              borderRadius: '6px',
-            }}
             getPopupContainer={(triggerNode) => triggerNode.parentElement}
           >
             <Avatar
-              style={{
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                border: '2px solid transparent'
-              }}
-              src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&fit=crop"
-              icon={<UserOutlined />}
-              onMouseEnter={(e) => {
-                e.target.style.borderColor = 'rgba(255,255,255,0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.borderColor = 'transparent';
-              }}
+              size={40}
+              style={{ cursor: 'pointer', transition: 'all 0.3s ease', border: '2px solid transparent' }}
+              src={user?.avatar ? `http://127.0.0.1:8090/api/files/_pb_users_auth_/${user.id}/${user.avatar}` : undefined}
+              icon={!user?.avatar && <UserOutlined />}
+              alt={user?.name || user?.email}
+              onMouseEnter={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.3)'; }}
+              onMouseLeave={(e) => { e.target.style.borderColor = 'transparent'; }}
               aria-label="User menu"
               role="button"
               tabIndex={0}

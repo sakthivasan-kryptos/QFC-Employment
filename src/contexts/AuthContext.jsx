@@ -1,101 +1,88 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import PocketBase from 'pocketbase';
 import { message } from 'antd';
-
+import { useNavigate } from 'react-router-dom';
+const pb = new PocketBase('http://127.0.0.1:8090');
 const AuthContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // Check for existing session on mount
+  const navigate = useNavigate();
   useEffect(() => {
-    const savedUser = localStorage.getItem('auth_user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('auth_user');
+    if (pb.authStore.isValid) {
+      setUser(pb.authStore.model);
+    } else {
+      const savedUser = localStorage.getItem('auth_user');
+      if (savedUser) {
+        try {
+          setUser(JSON.parse(savedUser));
+        } catch {
+          localStorage.removeItem('auth_user');
+        }
       }
     }
     setLoading(false);
   }, []);
 
-  const login = async (email, password, rememberMe = false) => {
-    setLoading(true);
-    
-    try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Demo credentials validation
-      const demoCredentials = [
-        { email: 'admin@example.com', password: 'admin123', role: 'admin' },
-        { email: 'user@example.com', password: 'user123', role: 'user' },
-        { email: 'demo@test.com', password: 'demo123', role: 'demo' }
-      ];
-      
-      const validUser = demoCredentials.find(
-        cred => cred.email === email && cred.password === password
-      );
-      
-      if (!validUser) {
-        throw new Error('Invalid email or password');
-      }
-      
-      const userData = {
-        id: Math.random().toString(36).substr(2, 9),
-        email: validUser.email,
-        role: validUser.role,
-        name: validUser.email.split('@')[0],
-        loginTime: new Date().toISOString()
-      };
-      
-      setUser(userData);
-      
-      // Save to localStorage if "Remember Me" is checked
-      if (rememberMe) {
-        localStorage.setItem('auth_user', JSON.stringify(userData));
-      }
-      
-      // Show success message
-      message.success('Signed in successfully.', 3);
-      
-      return { success: true, user: userData };
-    } catch (error) {
-      return { success: false, error: error.message };
-    } finally {
-      setLoading(false);
+ const login = async (email, password, rememberMe = false) => {
+  setLoading(true);
+  try {
+    // Authenticate via PocketBase
+    const authData = await pb.collection('users').authWithPassword(email, password);
+    // Save user and token in state
+    setUser(authData.record);
+
+    // PocketBase internal authStore
+    pb.authStore.save(authData.token, rememberMe);
+
+    // Also save in localStorage if "Remember Me" is checked
+    if (rememberMe) {
+      localStorage.setItem('auth_user', JSON.stringify(authData.record));
+      localStorage.setItem('auth_token', authData.token);
     }
-  };
+
+    message.success('Signed in successfully', 3);
+
+    return { success: true, user: authData.record, token: authData.token };
+
+  } catch (err) {
+    console.error('Login error:', err);
+
+    // Default PocketBase error
+    const pbMessage = err.data?.message || err.message || '';
+
+    // Custom message if PocketBase returned "Failed to authenticate"
+    let errorMessage = pbMessage === "Failed to authenticate."
+      ? "Please check your login credentials."
+      : pbMessage || "Login failed. Please try again.";
+
+    return { success: false, error: errorMessage };
+  } finally {
+    setLoading(false);
+  }
+};
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('auth_user');
+    pb.authStore.clear();
+
+    message.info('Logged out successfully', 3);
+
+    navigate('/login', { replace: true });
   };
 
-  const isAuthenticated = () => {
-    return !!user;
-  };
-
-  const value = {
-    user,
-    login,
-    logout,
-    isAuthenticated,
-    loading
-  };
+  const isAuthenticated = () => !!user;
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated, loading }}>
       {children}
     </AuthContext.Provider>
   );

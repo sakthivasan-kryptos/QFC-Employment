@@ -1,7 +1,6 @@
 import { Layout, Menu } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { menuItems } from '../../data/menuConfig.jsx';
-import './Header.css';
 
 const { Sider } = Layout;
 

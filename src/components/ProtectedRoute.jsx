@@ -1,33 +1,31 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { Spin, Typography } from 'antd';
 
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+const { Text } = Typography;
+
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { isAuthenticated, user, loading } = useAuth();
   const location = useLocation();
 
-  // Show loading state while checking authentication
   if (loading) {
     return (
-      <div className="protected-route-loading">
-        <div className="loading-spinner"></div>
-        <p>Checking authentication...</p>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <Spin size="large" />
+        <Text style={{ marginTop: 16 }}>Checking authentication...</Text>
       </div>
     );
   }
 
-  // If not authenticated, redirect to login with the current location
   if (!isAuthenticated()) {
-    return (
-      <Navigate 
-        to="/login" 
-        state={{ from: location }} 
-        replace 
-      />
-    );
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // If authenticated, render the protected component
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return children;
 };
 
