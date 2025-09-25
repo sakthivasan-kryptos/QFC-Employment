@@ -1,19 +1,23 @@
 import { Layout, Menu } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { menuItems } from '../../data/menuConfig.jsx';
+import { getMenuItemsForRole  } from '../../data/menuConfig.jsx';
+import { useAuth } from '../../contexts/AuthContext';
 
 const { Sider } = Layout;
 
 const Sidebar = ({ collapsed }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  
+  const { user } = useAuth();
+
   // Get current page from pathname
   const currentPage = location.pathname.slice(1) || 'dashboard';
-  
+
   const handleMenuClick = (e) => {
     navigate(`/${e.key}`);
   };
+
+  const menuItems = getMenuItemsForRole(user.role_type);
 
   return (
     <Sider 
@@ -21,10 +25,8 @@ const Sidebar = ({ collapsed }) => {
       theme="light"
       className="qfc-sidebar"
       collapsible
-    collapsed={collapsed}
-    
-    collapsedWidth={80}
-   
+      collapsed={collapsed}
+      collapsedWidth={80}
     >
       <Menu
         theme="light"
@@ -36,6 +38,6 @@ const Sidebar = ({ collapsed }) => {
       />
     </Sider>
   );
-  };
+};
 
 export default Sidebar;

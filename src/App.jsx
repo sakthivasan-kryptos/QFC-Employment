@@ -9,7 +9,11 @@ import {
   Regulations,
   Reports,
   Settings,
-  LoginPage
+  LoginPage,
+  RegisterPage,
+  ApprovePending,
+  UsersPage,
+  UserRegistration,
 } from './pages';
 import ProtectedRoute from './components/ProtectedRoute';
 import './styles/App.css';
@@ -27,12 +31,84 @@ const AppLayout = () => {
         <Content className="qfc-content">
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/new-review" element={<NewReview />} />
-            <Route path="/all-reviews" element={<AllReviews />} />
-            <Route path="/regulations" element={<Regulations />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/settings" element={<Settings />} />
+
+            {/* Routes accessible by both admin and user */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute allowedRoles={['user', 'admin']}>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/new-review"
+              element={
+                <ProtectedRoute allowedRoles={['user', 'admin']}>
+                  <NewReview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/all-reviews"
+              element={
+                <ProtectedRoute allowedRoles={['user', 'admin']}>
+                  <AllReviews />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute allowedRoles={['user', 'admin']}>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Routes only for admin */}
+            <Route
+              path="/regulations"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <Regulations />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reports"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <Reports />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/approvepending"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <ApprovePending />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <UsersPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user-registration"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <UserRegistration />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </Content>
       </Layout>
@@ -43,14 +119,13 @@ const AppLayout = () => {
 function App() {
   return (
     <Routes>
-      {/* Public route */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
-      {/* Protected routes */}
       <Route
         path="/*"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={['user', 'admin']}>
             <AppLayout />
           </ProtectedRoute>
         }

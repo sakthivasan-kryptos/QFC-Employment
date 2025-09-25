@@ -6,3 +6,7 @@ export { default as Reports } from './Reports';
 export { default as Settings } from './Settings';
 export { default as LoginPage } from './LoginPage';
 export { default as ReviewResults } from './ReviewResults';
+export { default as RegisterPage } from './RegisterPage';
+export { default as ApprovePending } from './ApprovePending';
+export { default as UsersPage } from './UsersPage';
+export { default as UserRegistration } from './UserRegistration';

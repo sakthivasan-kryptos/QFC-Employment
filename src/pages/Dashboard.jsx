@@ -1,7 +1,9 @@
 import { Row, Col, Typography, Card, List, Tag, Alert, Button, Breadcrumb, Badge, Divider, Progress, Space, Statistic } from 'antd';
-import { ReloadOutlined, WarningOutlined, CheckCircleOutlined, ExclamationCircleOutlined, InfoCircleOutlined, ClockCircleOutlined, FileTextOutlined, HomeOutlined,ThunderboltOutlined,
+import {
+  ReloadOutlined, WarningOutlined, CheckCircleOutlined, ExclamationCircleOutlined, InfoCircleOutlined, ClockCircleOutlined, FileTextOutlined, HomeOutlined, ThunderboltOutlined,
 
-  CalendarOutlined,} from '@ant-design/icons';
+  CalendarOutlined,
+} from '@ant-design/icons';
 import PageHeader from '../components/ui/PageHeader';
 import StatCard from '../components/ui/StatCard';
 import ReviewCard from '../components/ui/ReviewCard';
@@ -9,7 +11,7 @@ import { useCompliance } from '../contexts/ComplianceContext';
 import { statsData, recentReviews } from '../data/mockData';
 import TestApiWorkflow from '../components/TestApiWorkflow';
 import { useEffect, useState } from 'react';
-import { getLatestComprehensiveResponse, getComplianceSummaryForDashboard,  getComplianceData } from '../services/localStorageService';
+import { getLatestComprehensiveResponse, getComplianceSummaryForDashboard, getComplianceData } from '../services/localStorageService';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -39,12 +41,12 @@ const Dashboard = () => {
         const latestResponse = getLatestComprehensiveResponse();
         const complianceSummary = getComplianceSummaryForDashboard();
         const complianceData = getComplianceData();
-       
+
         if (latestResponse?.data) {
           setComprehensiveData(latestResponse.data);
           console.log('Missing regulations:', comprehensiveData);
         }
-        
+
         if (complianceSummary) {
           setApiResponseData(complianceSummary);
         }
@@ -59,13 +61,13 @@ const Dashboard = () => {
     loadComprehensiveData();
   }, []);
 
-   console.log('ComprehensiveData jj:', comprehensiveData);
+  console.log('ComprehensiveData jj:', comprehensiveData);
   // Also load from cookie/localStorage (existing functionality)
   useEffect(() => {
     const cookieResponse = document.cookie
       .split('; ')
       .find(row => row.startsWith('lastUploadResponse='));
-    
+
     if (cookieResponse) {
       try {
         const responseData = JSON.parse(decodeURIComponent(cookieResponse.split('=')[1]));
@@ -84,52 +86,52 @@ const Dashboard = () => {
 
   // Enhanced stats data with comprehensive response metrics
   const enhancedStatsData = apiResponseData ? [
-    { 
-      title: 'Reviews This Month', 
-      value: apiResponseData.reviews_this_month || getTotalReviews(), 
+    {
+      title: 'Reviews This Month',
+      value: apiResponseData.reviews_this_month || getTotalReviews(),
       color: '#1890ff',
       backgroundColor: '#f0f8ff'
     },
-    { 
-      title: 'Compliance Rate', 
+    {
+      title: 'Compliance Rate',
       value: apiResponseData.compliance_rate || getComplianceStatus(),
       color: apiResponseData.compliance_status === 'Compliant' ? '#52c41a' : '#ff4d4f',
       backgroundColor: apiResponseData.compliance_status === 'Compliant' ? '#f6ffed' : '#fff2f0'
     },
-    { 
-      title: 'Critical Gaps', 
+    {
+      title: 'Critical Gaps',
       value: apiResponseData.critical_issues || getCriticalIssuesCount(),
       color: '#ff4d4f',
       backgroundColor: '#fff2f0'
     },
-    { 
-      title: 'Avg Review Time', 
+    {
+      title: 'Avg Review Time',
       value: apiResponseData.avg_review_time || '2.3 hrs',
       suffix: '',
       color: '#faad14',
       backgroundColor: '#fffbe6'
     }
   ] : [
-    { 
-      title: 'Total Reviews', 
-      value: getTotalReviews(), 
+    {
+      title: 'Total Reviews',
+      value: getTotalReviews(),
       color: '#1890ff',
       backgroundColor: '#f0f8ff'
     },
-    { 
-      title: 'Compliance Status', 
+    {
+      title: 'Compliance Status',
       value: getComplianceStatus(),
       color: getComplianceStatus() === 'Compliant' ? '#52c41a' : '#ff4d4f',
       backgroundColor: getComplianceStatus() === 'Compliant' ? '#f6ffed' : '#fff2f0'
     },
-    { 
-      title: 'Critical Issues', 
+    {
+      title: 'Critical Issues',
       value: getCriticalIssuesCount(),
       color: '#ff4d4f',
       backgroundColor: '#fff2f0'
     },
-    { 
-      title: 'Must Fix Items', 
+    {
+      title: 'Must Fix Items',
       value: getMustFixItems().length,
       suffix: ' items',
       color: '#faad14',
@@ -169,11 +171,11 @@ const Dashboard = () => {
 
       <PageHeader
         title="Dashboard"
-        subtitle="QFC compliance overview and key metrics"
+        subtitle=" compliance overview and key metrics"
         extra={
           <Space>
-            <Button 
-              icon={<ReloadOutlined />} 
+            <Button
+              icon={<ReloadOutlined />}
               onClick={refreshData}
               loading={loading}
             >
@@ -197,8 +199,8 @@ const Dashboard = () => {
 
       {/* Comprehensive Analysis Summary */}
       {comprehensiveData && (
-        <Card 
-          title="Latest Compliance Analysis" 
+        <Card
+          title="Latest Compliance Analysis"
           style={{ marginBottom: '24px' }}
           extra={
             comprehensiveData.final_assessment?.confidence_score && (
@@ -246,7 +248,7 @@ const Dashboard = () => {
               </Space>
             </Col>
           </Row>
-          
+
           {comprehensiveData.final_assessment?.executive_summary && (
             <>
               <Divider />
@@ -261,7 +263,7 @@ const Dashboard = () => {
         </Card>
       )}
 
-  
+
 
       {/* Key Metrics */}
       <Row gutter={[24, 24]} style={{ marginBottom: '24px' }}>
@@ -272,264 +274,264 @@ const Dashboard = () => {
         ))}
       </Row>
 
-      
+
 
       {/* Critical Issues and Action Items */}
       {comprehensiveData && (
         <Row gutter={[24, 24]} style={{ marginBottom: '24px' }}>
           {/* Critical Gaps */}
           {comprehensiveData.critical_gaps?.items?.length > 0 && (
-  <Col xs={24}>
-    <Card>
-    <Title level={4}>
-      <ExclamationCircleOutlined style={{ color: '#ff4d4f', marginRight: '8px' }} />
-      Critical Gaps ({comprehensiveData.critical_gaps.count})
-    </Title>
+            <Col xs={24}>
+              <Card>
+                <Title level={4}>
+                  <ExclamationCircleOutlined style={{ color: '#ff4d4f', marginRight: '8px' }} />
+                  Critical Gaps ({comprehensiveData.critical_gaps.count})
+                </Title>
 
-    <Row gutter={[16, 16]}>
-      {comprehensiveData.critical_gaps.items.map((item, index) => (
-        <Col xs={24} key={index}>
-          <Card
-            size="small"
-            title={
-              <span>
-                <ExclamationCircleOutlined style={{ color: '#ff4d4f', marginRight: '8px' }} />
-                {item.gap_type}
-              </span>
-            }
-            extra={ <>
-      <Tag color="error">{item.severity}</Tag>
-      <Tag color="geekblue">{item.qfc_article}</Tag>
-      {item.legal_risk && <Tag color="volcano">{item.legal_risk}</Tag>}
-    </>}
-          >
-            <Space direction="vertical" size="small" style={{ width: '100%' }}>
-              <Text type="secondary">{item.qfc_article}</Text>
+                <Row gutter={[16, 16]}>
+                  {comprehensiveData.critical_gaps.items.map((item, index) => (
+                    <Col xs={24} key={index}>
+                      <Card
+                        size="small"
+                        title={
+                          <span>
+                            <ExclamationCircleOutlined style={{ color: '#ff4d4f', marginRight: '8px' }} />
+                            {item.gap_type}
+                          </span>
+                        }
+                        extra={<>
+                          <Tag color="error">{item.severity}</Tag>
+                          <Tag color="geekblue">{item.qfc_article}</Tag>
+                          {item.legal_risk && <Tag color="volcano">{item.legal_risk}</Tag>}
+                        </>}
+                      >
+                        <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                          <Text type="secondary">{item.qfc_article}</Text>
 
-              <Title level={5} style={{ marginBottom: 0, marginTop: '8px' }}>
-                Document States:
-              </Title>
-              <Text style={{ fontSize: '12px' }}>{item.document_states}</Text>
+                          <Title level={5} style={{ marginBottom: 0, marginTop: '8px' }}>
+                            Document States:
+                          </Title>
+                          <Text style={{ fontSize: '12px' }}>{item.document_states}</Text>
 
-              <Title level={5} style={{ marginBottom: 0, marginTop: '8px' }}>
-                Qatar Financial Criteria Requires:
-              </Title>
-              <Text style={{ fontSize: '12px' }}>{item.qfc_requires}</Text>
+                          <Title level={5} style={{ marginBottom: 0, marginTop: '8px' }}>
+                            Qatar Financial Criteria Requires:
+                          </Title>
+                          <Text style={{ fontSize: '12px' }}>{item.qfc_requires}</Text>
 
-              <Title level={5} style={{ marginBottom: 0, marginTop: '8px' }}>
-                Immediate Action:
-              </Title>
-              <Text style={{ fontSize: '12px' }}>{item.immediate_action}</Text>
-            </Space>
-          </Card>
-        </Col>
-      ))}
-    </Row>
+                          <Title level={5} style={{ marginBottom: 0, marginTop: '8px' }}>
+                            Immediate Action:
+                          </Title>
+                          <Text style={{ fontSize: '12px' }}>{item.immediate_action}</Text>
+                        </Space>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
 
-    {comprehensiveData.critical_gaps.items.length > 5 && (
-      <div style={{ textAlign: 'center', marginTop: '12px' }}>
-        <Text type="secondary">
-          +{comprehensiveData.critical_gaps.items.length - 5} more critical gaps
-        </Text>
-      </div>
-    )}
-    </Card>
-  </Col>
-)}
+                {comprehensiveData.critical_gaps.items.length > 5 && (
+                  <div style={{ textAlign: 'center', marginTop: '12px' }}>
+                    <Text type="secondary">
+                      +{comprehensiveData.critical_gaps.items.length - 5} more critical gaps
+                    </Text>
+                  </div>
+                )}
+              </Card>
+            </Col>
+          )}
 
 
           {/*Critical Missing Categories */}
           {comprehensiveData?.comprehensive_coverage_analysis?.critical_missing_categories?.length > 0 && (
-  <Col xs={24} md={12}>
-    <Card title="Critical Missing Categories" size="small">
-      <Space wrap>
-        {comprehensiveData.comprehensive_coverage_analysis.critical_missing_categories.map((cat, i) => (
-          <Tag color="error" key={i}>{cat}</Tag>
-        ))}
-      </Space>
-    </Card>
-  </Col>
-)}
+            <Col xs={24} md={12}>
+              <Card title="Critical Missing Categories" size="small">
+                <Space wrap>
+                  {comprehensiveData.comprehensive_coverage_analysis.critical_missing_categories.map((cat, i) => (
+                    <Tag color="error" key={i}>{cat}</Tag>
+                  ))}
+                </Space>
+              </Card>
+            </Col>
+          )}
 
 
 
-      
 
-        {/* Improvement Roadmap */}
-        
-     {comprehensiveData?.action_plan && (
-  <Col xs={24}>
-<Card>
-    <Title level={4} style={{ marginBottom: '16px' }}>
-      Improvement Roadmap
-    </Title>
-    <Row gutter={[16, 16]}>
-      {/* Immediate Actions */}
-      <Col xs={24}>
-        <Card title={
-              <span>
-                <ThunderboltOutlined style={{ color: '#faad14', marginRight: 8 }} />
-                Immediate Actions
-              </span>
-            } size="small">
-          <List
-            dataSource={comprehensiveData.action_plan.immediate_actions || []}
-            renderItem={(item, i) => (
-              <List.Item key={i}>
-                <Text>{item}</Text>
-              </List.Item>
-            )}
-          />
-        </Card>
-      </Col>
 
-      {/* Short Term */}
-      <Col xs={24}>
-        <Card title={
-              <span>
-                <ClockCircleOutlined style={{ color: '#1890ff', marginRight: 8 }} />
-                Short Term
-              </span>
-            } size="small">
-          <List
-            dataSource={comprehensiveData.action_plan.short_term_improvements || []}
-            renderItem={(item, i) => (
-              <List.Item key={i}>
-                <Text>{item}</Text>
-              </List.Item>
-            )}
-          />
-        </Card>
-      </Col>
+          {/* Improvement Roadmap */}
 
-      {/* Long Term */}
-      <Col xs={24}>
-        <Card title={
-              <span>
-                <CalendarOutlined style={{ color: '#52c41a', marginRight: 8 }} />
-                Long Term
-              </span>
-            } size="small">
-          <List
-            dataSource={comprehensiveData.action_plan.long_term_enhancements || []}
-            renderItem={(item, i) => (
-              <List.Item key={i}>
-                <Text>{item}</Text>
-              </List.Item>
-            )}
-          />
-        </Card>
-      </Col>
+          {comprehensiveData?.action_plan && (
+            <Col xs={24}>
+              <Card>
+                <Title level={4} style={{ marginBottom: '16px' }}>
+                  Improvement Roadmap
+                </Title>
+                <Row gutter={[16, 16]}>
+                  {/* Immediate Actions */}
+                  <Col xs={24}>
+                    <Card title={
+                      <span>
+                        <ThunderboltOutlined style={{ color: '#faad14', marginRight: 8 }} />
+                        Immediate Actions
+                      </span>
+                    } size="small">
+                      <List
+                        dataSource={comprehensiveData.action_plan.immediate_actions || []}
+                        renderItem={(item, i) => (
+                          <List.Item key={i}>
+                            <Text>{item}</Text>
+                          </List.Item>
+                        )}
+                      />
+                    </Card>
+                  </Col>
 
-      {/* Missing Regulation Priorities */}
-      <Col xs={24}>
-        <Card title={
-              <span>
-                <WarningOutlined style={{ color: '#ff4d4f', marginRight: 8 }} />
-                Missing Regulation Priorities
-              </span>
-            } size="small">
-          <List
-            dataSource={comprehensiveData.action_plan.missing_regulation_priorities || []}
-            renderItem={(item, i) => (
-              <List.Item key={i}>
-                <Text>{item}</Text>
-              </List.Item>
-            )}
-          />
-        </Card>
-      </Col>
-    </Row>
-    </Card>
-  </Col>
-)}
+                  {/* Short Term */}
+                  <Col xs={24}>
+                    <Card title={
+                      <span>
+                        <ClockCircleOutlined style={{ color: '#1890ff', marginRight: 8 }} />
+                        Short Term
+                      </span>
+                    } size="small">
+                      <List
+                        dataSource={comprehensiveData.action_plan.short_term_improvements || []}
+                        renderItem={(item, i) => (
+                          <List.Item key={i}>
+                            <Text>{item}</Text>
+                          </List.Item>
+                        )}
+                      />
+                    </Card>
+                  </Col>
+
+                  {/* Long Term */}
+                  <Col xs={24}>
+                    <Card title={
+                      <span>
+                        <CalendarOutlined style={{ color: '#52c41a', marginRight: 8 }} />
+                        Long Term
+                      </span>
+                    } size="small">
+                      <List
+                        dataSource={comprehensiveData.action_plan.long_term_enhancements || []}
+                        renderItem={(item, i) => (
+                          <List.Item key={i}>
+                            <Text>{item}</Text>
+                          </List.Item>
+                        )}
+                      />
+                    </Card>
+                  </Col>
+
+                  {/* Missing Regulation Priorities */}
+                  <Col xs={24}>
+                    <Card title={
+                      <span>
+                        <WarningOutlined style={{ color: '#ff4d4f', marginRight: 8 }} />
+                        Missing Regulation Priorities
+                      </span>
+                    } size="small">
+                      <List
+                        dataSource={comprehensiveData.action_plan.missing_regulation_priorities || []}
+                        renderItem={(item, i) => (
+                          <List.Item key={i}>
+                            <Text>{item}</Text>
+                          </List.Item>
+                        )}
+                      />
+                    </Card>
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          )}
 
 
 
           {/* Recommendations */}
           {comprehensiveData.recommendations?.items?.length > 0 && (
-  <Col xs={24} lg={12}>
-    <Card>
-    <Title level={4} style={{ marginBottom: '16px' }}>
-      <InfoCircleOutlined style={{ color: '#1890ff', marginRight: '8px' }} />
-      Recommendations ({comprehensiveData.recommendations.count})
-    </Title>
+            <Col xs={24} lg={12}>
+              <Card>
+                <Title level={4} style={{ marginBottom: '16px' }}>
+                  <InfoCircleOutlined style={{ color: '#1890ff', marginRight: '8px' }} />
+                  Recommendations ({comprehensiveData.recommendations.count})
+                </Title>
 
-    <Row gutter={[16, 16]}>
-      {comprehensiveData.recommendations.items.slice(0, 5).map((item, index) => (
-        <Col xs={24} key={index}>
-          <Card
-            size="small"
-            title={
-              <span>
-                <InfoCircleOutlined style={{ color: '#1890ff', marginRight: '8px' }} />
-                {item.area}
-              </span>
-            }
-            extra={
-              <Tag
-                color={
-                  item.priority === 'High'
-                    ? 'error'
-                    : item.priority === 'Medium'
-                    ? 'warning'
-                    : 'success'
-                }
-              >
-                {item.priority}
-              </Tag>
-            }
-          >
-            <div>
-              <Title level={5} style={{ marginBottom: 4, marginTop: 0 }}>
-                Recommended Changes:
-              </Title>
-              <Text style={{ fontSize: '12px' }}>{item.recommended_change}</Text>
+                <Row gutter={[16, 16]}>
+                  {comprehensiveData.recommendations.items.slice(0, 5).map((item, index) => (
+                    <Col xs={24} key={index}>
+                      <Card
+                        size="small"
+                        title={
+                          <span>
+                            <InfoCircleOutlined style={{ color: '#1890ff', marginRight: '8px' }} />
+                            {item.area}
+                          </span>
+                        }
+                        extra={
+                          <Tag
+                            color={
+                              item.priority === 'High'
+                                ? 'error'
+                                : item.priority === 'Medium'
+                                  ? 'warning'
+                                  : 'success'
+                            }
+                          >
+                            {item.priority}
+                          </Tag>
+                        }
+                      >
+                        <div>
+                          <Title level={5} style={{ marginBottom: 4, marginTop: 0 }}>
+                            Recommended Changes:
+                          </Title>
+                          <Text style={{ fontSize: '12px' }}>{item.recommended_change}</Text>
 
-              <Title level={5} style={{ marginBottom: 4, marginTop: '12px' }}>
-                Business Benefit:
-              </Title>
-              <Text>{item.business_benefit}</Text>
-            </div>
-          </Card>
-        </Col>
-      ))}
-    </Row>
+                          <Title level={5} style={{ marginBottom: 4, marginTop: '12px' }}>
+                            Business Benefit:
+                          </Title>
+                          <Text>{item.business_benefit}</Text>
+                        </div>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
 
-    {comprehensiveData.recommendations.items.length > 5 && (
-      <div style={{ textAlign: 'center', marginTop: '12px' }}>
-        <Text type="secondary">
-          +{comprehensiveData.recommendations.items.length - 5} more recommendations
-        </Text>
-      </div>
-    )}
-  </Card>
-  </Col>
-)}
+                {comprehensiveData.recommendations.items.length > 5 && (
+                  <div style={{ textAlign: 'center', marginTop: '12px' }}>
+                    <Text type="secondary">
+                      +{comprehensiveData.recommendations.items.length - 5} more recommendations
+                    </Text>
+                  </div>
+                )}
+              </Card>
+            </Col>
+          )}
 
 
 
           {/*Coverage Analysis*/}
 
           {comprehensiveData?.comprehensive_coverage_analysis && (
-             <Col xs={24} lg={12}>
-  <Card title="Coverage Analysis" style={{ marginBottom: '24px' }}>
-    <List
-      dataSource={Object.entries(comprehensiveData.comprehensive_coverage_analysis.coverage_by_category)}
-      renderItem={([category, details]) => (
-        <List.Item>
-          <List.Item.Meta
-            title={<Text strong>{category}</Text>}
-            description={
-              <Text>Coverage: {details.coverage_percentage}</Text>
-            }
-          />
-        </List.Item>
-      )}
-    />
-  </Card>
-  </Col>
-)}
+            <Col xs={24} lg={12}>
+              <Card title="Coverage Analysis" style={{ marginBottom: '24px' }}>
+                <List
+                  dataSource={Object.entries(comprehensiveData.comprehensive_coverage_analysis.coverage_by_category)}
+                  renderItem={([category, details]) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        title={<Text strong>{category}</Text>}
+                        description={
+                          <Text>Coverage: {details.coverage_percentage}</Text>
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
+              </Card>
+            </Col>
+          )}
 
 
 
@@ -537,7 +539,7 @@ const Dashboard = () => {
           {/* Compliant Areas */}
           {comprehensiveData.compliant_items?.items?.length > 0 && (
             <Col xs={24} lg={12}>
-              <Card 
+              <Card
                 title={
                   <span>
                     <CheckCircleOutlined style={{ color: '#52c41a', marginRight: '8px' }} />
@@ -576,92 +578,92 @@ const Dashboard = () => {
         </Row>
       )}
 
-     
 
- {/* Missing Regulations Card */}
-{/* Missing Regulations Card */}
-{(comprehensiveData?.missing_regulations?.items?.length > 0 ||
-  apiResponseData?.missing_regulations?.items?.length > 0) && (
-  <Row gutter={[24, 24]} style={{ marginBottom: '24px' }}>
-    <Col xs={24}>
-      <Card>
-        <Title level={4}>
-          <WarningOutlined style={{ color: '#faad14', marginRight: '8px' }} />
-          Missing Regulations (
-            {comprehensiveData?.missing_regulations?.count ||
-             apiResponseData?.missing_regulations?.count ||
-             0}
-          )
-        </Title>
 
-        <List
-          dataSource={
-            comprehensiveData?.missing_regulations?.items ||
-            apiResponseData?.missing_regulations?.items ||
-            []
-          }
-          renderItem={(item, index) => (
-            <List.Item key={index}>
-              <List.Item.Meta
-                title={<Text strong>{item.regulation_area}</Text>}
-                description={
-                  <Space direction="vertical" size="small">
-                    <Text type="secondary">{item.qfc_article}</Text>
-                    <Text style={{ fontSize: '12px' }}>{item.regulation_summary}</Text>
-                  </Space>
-                }
-              />
-              {item.priority && (
-                <Tag
-                  color={
-                    item.priority === "High"
-                      ? "error"
-                      : item.priority === "Medium"
-                      ? "warning"
-                      : "success"
+      {/* Missing Regulations Card */}
+      {/* Missing Regulations Card */}
+      {(comprehensiveData?.missing_regulations?.items?.length > 0 ||
+        apiResponseData?.missing_regulations?.items?.length > 0) && (
+          <Row gutter={[24, 24]} style={{ marginBottom: '24px' }}>
+            <Col xs={24}>
+              <Card>
+                <Title level={4}>
+                  <WarningOutlined style={{ color: '#faad14', marginRight: '8px' }} />
+                  Missing Regulations (
+                  {comprehensiveData?.missing_regulations?.count ||
+                    apiResponseData?.missing_regulations?.count ||
+                    0}
+                  )
+                </Title>
+
+                <List
+                  dataSource={
+                    comprehensiveData?.missing_regulations?.items ||
+                    apiResponseData?.missing_regulations?.items ||
+                    []
                   }
-                >
-                  {item.priority}
-                </Tag>
-              )}
-            </List.Item>
-          )}
-        />
+                  renderItem={(item, index) => (
+                    <List.Item key={index}>
+                      <List.Item.Meta
+                        title={<Text strong>{item.regulation_area}</Text>}
+                        description={
+                          <Space direction="vertical" size="small">
+                            <Text type="secondary">{item.qfc_article}</Text>
+                            <Text style={{ fontSize: '12px' }}>{item.regulation_summary}</Text>
+                          </Space>
+                        }
+                      />
+                      {item.priority && (
+                        <Tag
+                          color={
+                            item.priority === "High"
+                              ? "error"
+                              : item.priority === "Medium"
+                                ? "warning"
+                                : "success"
+                          }
+                        >
+                          {item.priority}
+                        </Tag>
+                      )}
+                    </List.Item>
+                  )}
+                />
 
-        {(comprehensiveData?.missing_regulations?.items?.length > 5 ||
-          apiResponseData?.missing_regulations?.items?.length > 5) && (
-          <div style={{ textAlign: "center", marginTop: "12px" }}>
-            <Text type="secondary">
-              +{(comprehensiveData?.missing_regulations?.items?.length ||
-                apiResponseData?.missing_regulations?.items?.length) - 5}{" "}
-              more missing regulations
-            </Text>
-          </div>
+                {(comprehensiveData?.missing_regulations?.items?.length > 5 ||
+                  apiResponseData?.missing_regulations?.items?.length > 5) && (
+                    <div style={{ textAlign: "center", marginTop: "12px" }}>
+                      <Text type="secondary">
+                        +{(comprehensiveData?.missing_regulations?.items?.length ||
+                          apiResponseData?.missing_regulations?.items?.length) - 5}{" "}
+                        more missing regulations
+                      </Text>
+                    </div>
+                  )}
+              </Card>
+            </Col>
+          </Row>
         )}
-      </Card>
-    </Col>
-  </Row>
-)}
-{console.log("comprehensiveData.missing_regulations:", comprehensiveData?.missing_regulations)}
-{console.log("apiResponseData.missing_regulations:", apiResponseData?.missing_regulations)
-}
+      {console.log("comprehensiveData.missing_regulations:", comprehensiveData?.missing_regulations)}
+      {console.log("apiResponseData.missing_regulations:", apiResponseData?.missing_regulations)
+      }
 
-      
+
       {/*Regulatory Cross Reference */}
       {comprehensiveData?.regulatory_cross_reference?.document_topics_to_qfc_articles && (
-  <Col xs={24}>
-    <Card title="Regulatory Cross Reference" size="small">
-      <List
-        dataSource={Object.entries(comprehensiveData.regulatory_cross_reference.document_topics_to_qfc_articles)}
-        renderItem={([topic, articles]) => (
-          <List.Item>
-            <Text strong>{topic}</Text>: {articles.join(', ')}
-          </List.Item>
-        )}
-      />
-    </Card>
-  </Col>
-)}
+        <Col xs={24}>
+          <Card title="Regulatory Cross Reference" size="small">
+            <List
+              dataSource={Object.entries(comprehensiveData.regulatory_cross_reference.document_topics_to_qfc_articles)}
+              renderItem={([topic, articles]) => (
+                <List.Item>
+                  <Text strong>{topic}</Text>: {articles.join(', ')}
+                </List.Item>
+              )}
+            />
+          </Card>
+        </Col>
+      )}
 
       {/* Fallback Dashboard Content */}
       {!comprehensiveData && (
@@ -685,7 +687,7 @@ const Dashboard = () => {
                   </Space>
                 </Card>
               </Col>
-              
+
               <Col xs={24} lg={12}>
                 <Card title="Recent Activity" size="small">
                   <Text type="secondary">
